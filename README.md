@@ -30,3 +30,7 @@
 - MySQL/PostgreSQL
 - JUnit/Mockito
 - Swagger
+
+## Diagrama
+
+![Descrição da Imagem](src/main/resources/static/diagrama.png)
