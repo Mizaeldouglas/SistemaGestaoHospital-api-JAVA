@@ -1,6 +1,7 @@
 package br.com.mizaeldouglas.api.service.doctor;
 
 import br.com.mizaeldouglas.api.domain.doctor.Doctor;
+import br.com.mizaeldouglas.api.dto.doctor.DoctorDetailsDto;
 import br.com.mizaeldouglas.api.dto.doctor.DoctorRequestDto;
 import br.com.mizaeldouglas.api.dto.doctor.DoctorResponseDto;
 import br.com.mizaeldouglas.api.repositories.DoctorRepository;
@@ -53,6 +54,19 @@ public class DoctorService {
         );
     }
 
+    public DoctorDetailsDto getDoctorDetails(Long id) {
+        Doctor doctor = doctorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Doctor not Found"));
+
+        return new DoctorDetailsDto(
+                doctor.getCrm(),
+                doctor.getSpecialty(),
+                doctor.getName(),
+                doctor.getEmail(),
+                doctor.getPhone()
+        );
+    }
+
+
     public List<DoctorResponseDto> findAll() {
         return doctorRepository.findAll().stream().map(doctor ->
                 new DoctorResponseDto(
@@ -65,6 +79,7 @@ public class DoctorService {
                 )
         ).toList();
     }
+
     @Transactional
     public void update(Long id, DoctorRequestDto doctorRequestDto) {
         Optional<Doctor> optionalDoctor = doctorRepository.findById(id);

@@ -7,16 +7,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Table(name = "doctor")
 @Entity
-@Table(name = "DOCTORS")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Doctor extends User {
+public class Doctor {
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String name;
+    private String email;
+    private String password;
+    private String phone;
     private String crm;
     private String specialty;
 }

@@ -9,20 +9,21 @@ import lombok.Setter;
 
 import java.util.Date;
 
+@Table(name = "patient")
 @Entity
-@Table(name = "PATIENTS")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Patient extends User {
+public class Patient {
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String name;
+    private String email;
+    private String phone;
     private String cpf;
     private String address;
     private Date birthDate;
-
-
 
 }
