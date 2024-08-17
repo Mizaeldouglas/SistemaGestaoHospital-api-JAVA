@@ -21,8 +21,11 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                .info(new Info().title("API Documentation")
-                        .version("1.0.0"))
+                .info(new Info()
+                        .title("Doc API de Gestão de hospital")
+                        .description("Esta API permite a gestão de um hospital, incluindo funcionalidades para gerenciar pacientes, médicos, consultas, prontuários médicos e faturamento. A API utiliza JWT para autenticação e autorização, garantindo a segurança dos endpoints.")
+                        .version("1.0.0")
+                )
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(new Components().addSecuritySchemes("bearerAuth",
                         new io.swagger.v3.oas.models.security.SecurityScheme().name("bearerAuth")
