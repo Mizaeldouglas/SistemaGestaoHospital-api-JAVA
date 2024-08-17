@@ -1,7 +1,6 @@
 package br.com.mizaeldouglas.api.service.doctor;
 
 import br.com.mizaeldouglas.api.domain.doctor.Doctor;
-import br.com.mizaeldouglas.api.dto.doctor.DoctorDetailsDto;
 import br.com.mizaeldouglas.api.dto.doctor.DoctorRequestDto;
 import br.com.mizaeldouglas.api.dto.doctor.DoctorResponseDto;
 import br.com.mizaeldouglas.api.repositories.doctor.DoctorRepository;
@@ -38,12 +37,13 @@ public class DoctorService {
                 doctor.getSpecialty(),
                 doctor.getName(),
                 doctor.getEmail(),
-                doctor.getPhone());
+                doctor.getPhone()
+        );
     }
 
-    public DoctorDetailsDto findById(Long id) {
+    public DoctorResponseDto findById(Long id) {
         Doctor doctor = doctorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Doctor not Found"));
-        return new DoctorDetailsDto(
+        return new DoctorResponseDto(
                 doctor.getId(),
                 doctor.getCrm(),
                 doctor.getSpecialty(),
@@ -52,18 +52,6 @@ public class DoctorService {
                 doctor.getPhone()
         );
     }
-
-//    public DoctorDetailsDto getDoctorDetails(Long id) {
-//        Doctor doctor = doctorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Doctor not Found"));
-//
-//        return new DoctorDetailsDto(
-//                doctor.getCrm(),
-//                doctor.getSpecialty(),
-//                doctor.getName(),
-//                doctor.getEmail(),
-//                doctor.getPhone()
-//        );
-//    }
 
 
     public List<DoctorResponseDto> findAll() {
@@ -80,18 +68,28 @@ public class DoctorService {
     }
 
     @Transactional
-    public void update(Long id, DoctorRequestDto doctorRequestDto) {
+    public DoctorResponseDto update(Long id, DoctorRequestDto doctorRequestDto) {
         Optional<Doctor> optionalDoctor = doctorRepository.findById(id);
         if (optionalDoctor.isPresent()) {
             Doctor doctor = optionalDoctor.get();
-
-            doctor.setName(doctorRequestDto.name());
-            doctor.setEmail(doctorRequestDto.email());
-            doctor.setPhone(doctorRequestDto.phone());
-            doctor.setCrm(doctorRequestDto.crm());
-            doctor.setSpecialty(doctorRequestDto.specialty());
-            doctor.setPassword(doctorRequestDto.password());
+            doctor.setName(doctorRequestDto.name() != null ? doctorRequestDto.name() : doctor.getName());
+            doctor.setEmail(doctorRequestDto.email() != null ? doctorRequestDto.email() : doctor.getEmail());
+            doctor.setPhone(doctorRequestDto.phone() != null ? doctorRequestDto.phone() : doctor.getPhone());
+            doctor.setCrm(doctorRequestDto.crm() != null ? doctorRequestDto.crm() : doctor.getCrm());
+            doctor.setSpecialty(doctorRequestDto.specialty() != null ? doctorRequestDto.specialty() : doctor.getSpecialty());
+            doctor.setPassword(doctorRequestDto.password() != null ? doctorRequestDto.password() : doctor.getPassword());
             doctorRepository.save(doctor);
+
+            return new DoctorResponseDto(
+                    doctor.getId(),
+                    doctor.getCrm(),
+                    doctor.getSpecialty(),
+                    doctor.getName(),
+                    doctor.getEmail(),
+                    doctor.getPhone()
+            );
+        } else {
+            throw new IllegalArgumentException("Doctor not found");
         }
     }
 

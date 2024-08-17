@@ -3,8 +3,8 @@ package br.com.mizaeldouglas.api.controller.doctor;
 
 import br.com.mizaeldouglas.api.domain.doctor.Doctor;
 import br.com.mizaeldouglas.api.dto.auth.ResponseDTO;
-import br.com.mizaeldouglas.api.dto.doctor.DoctorDetailsDto;
 import br.com.mizaeldouglas.api.dto.doctor.DoctorLoginRequestDTO;
+import br.com.mizaeldouglas.api.dto.doctor.DoctorRequestDto;
 import br.com.mizaeldouglas.api.dto.doctor.DoctorResponseDto;
 import br.com.mizaeldouglas.api.infra.security.TokenService;
 import br.com.mizaeldouglas.api.repositories.doctor.DoctorRepository;
@@ -16,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/doctor")
@@ -36,6 +35,12 @@ public class DoctorController {
         this.tokenService = tokenService;
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<DoctorResponseDto> update (@PathVariable Long id, @RequestBody DoctorRequestDto request){
+        DoctorResponseDto response = doctorService.update(id, request);
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping
     public ResponseEntity<List<DoctorResponseDto>> findAll() {
         List<DoctorResponseDto> doctors = doctorService.findAll();
@@ -43,9 +48,15 @@ public class DoctorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DoctorDetailsDto> findById(@PathVariable Long id) {
-        DoctorDetailsDto doctorDetailsDto = doctorService.findById(id);
+    public ResponseEntity<DoctorResponseDto> findById(@PathVariable Long id) {
+        DoctorResponseDto doctorDetailsDto = doctorService.findById(id);
         return ResponseEntity.ok(doctorDetailsDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        doctorService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/login")
