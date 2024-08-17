@@ -1,6 +1,6 @@
 ## Desafio: Sistema de Gestão de Hospital
 ### Descrição do Projeto
-- Você foi contratado para desenvolver um sistema de gestão hospitalar. O sistema deve permitir que os administradores do hospital gerenciem pacientes, médicos, consultas, prontuários médicos e faturamento. Além disso, deve haver um portal para pacientes e médicos acessarem informações relevantes.
+- Você foi contratado para desenvolver um sistema de gestão hospitalar. O sistema deve permitir que os administradores do hospital gerenciem pacientes, médicos, consultas, prontuários médicos e faturamento. Além disso, deve haver um portal para pacientes e médicos acessarem informações relevantes. O sistema deve incluir autenticação e autorização robustas, utilizando JWT para proteger endpoints e gerenciar sessões de usuários. Deve também permitir a criação, atualização e remoção de registros de médicos e pacientes, além de fornecer funcionalidades para agendamento de consultas e acesso a prontuários médicos. 
 ## Requisitos
 - [X] Cadastro e Login de Usuários: Pacientes e médicos devem poder se registrar e fazer login no sistema.
 - [X] Gestão de Pacientes: Administradores devem poder adicionar, atualizar e remover informações de pacientes.
