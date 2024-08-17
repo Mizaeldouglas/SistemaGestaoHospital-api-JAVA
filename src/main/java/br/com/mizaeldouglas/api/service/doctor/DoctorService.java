@@ -4,7 +4,7 @@ import br.com.mizaeldouglas.api.domain.doctor.Doctor;
 import br.com.mizaeldouglas.api.dto.doctor.DoctorDetailsDto;
 import br.com.mizaeldouglas.api.dto.doctor.DoctorRequestDto;
 import br.com.mizaeldouglas.api.dto.doctor.DoctorResponseDto;
-import br.com.mizaeldouglas.api.repositories.DoctorRepository;
+import br.com.mizaeldouglas.api.repositories.doctor.DoctorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -41,23 +41,10 @@ public class DoctorService {
                 doctor.getPhone());
     }
 
-    public Optional<DoctorResponseDto> findById(Long id) {
-        return doctorRepository.findById(id).map(doctor ->
-                new DoctorResponseDto(
-                        doctor.getId(),
-                        doctor.getCrm(),
-                        doctor.getSpecialty(),
-                        doctor.getName(),
-                        doctor.getEmail(),
-                        doctor.getPhone()
-                )
-        );
-    }
-
-    public DoctorDetailsDto getDoctorDetails(Long id) {
+    public DoctorDetailsDto findById(Long id) {
         Doctor doctor = doctorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Doctor not Found"));
-
         return new DoctorDetailsDto(
+                doctor.getId(),
                 doctor.getCrm(),
                 doctor.getSpecialty(),
                 doctor.getName(),
@@ -65,6 +52,18 @@ public class DoctorService {
                 doctor.getPhone()
         );
     }
+
+//    public DoctorDetailsDto getDoctorDetails(Long id) {
+//        Doctor doctor = doctorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Doctor not Found"));
+//
+//        return new DoctorDetailsDto(
+//                doctor.getCrm(),
+//                doctor.getSpecialty(),
+//                doctor.getName(),
+//                doctor.getEmail(),
+//                doctor.getPhone()
+//        );
+//    }
 
 
     public List<DoctorResponseDto> findAll() {

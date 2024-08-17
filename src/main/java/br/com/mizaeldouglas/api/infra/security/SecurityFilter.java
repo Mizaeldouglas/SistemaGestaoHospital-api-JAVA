@@ -1,7 +1,9 @@
 package br.com.mizaeldouglas.api.infra.security;
 
-import br.com.mizaeldouglas.api.domain.user.User;
-import br.com.mizaeldouglas.api.repositories.UserRepository;
+import br.com.mizaeldouglas.api.domain.doctor.Doctor;
+import br.com.mizaeldouglas.api.domain.patient.Patient;
+import br.com.mizaeldouglas.api.repositories.doctor.DoctorRepository;
+import br.com.mizaeldouglas.api.repositories.patient.PatientRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,25 +23,36 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     TokenService tokenService;
     @Autowired
-    UserRepository userRepository;
+    DoctorRepository doctorRepository;
+    @Autowired
+    PatientRepository patientRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = this.recoverToken(request);
         var login = tokenService.validateToken(token);
 
-        if(login != null){
-            User user = userRepository.findByEmail(login).orElseThrow(() -> new RuntimeException("User Not Found"));
-            var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (login != null) {
+            Doctor doctor = doctorRepository.findByEmail(login).orElse(null);
+            if (doctor != null) {
+                var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_DOCTOR"));
+                var authentication = new UsernamePasswordAuthenticationToken(doctor, null, authorities);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } else {
+                Patient patient = patientRepository.findByEmail(login).orElse(null);
+                if (patient != null) {
+                    var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_PATIENT"));
+                    var authentication = new UsernamePasswordAuthenticationToken(patient, null, authorities);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            }
         }
         filterChain.doFilter(request, response);
     }
 
-    private String recoverToken(HttpServletRequest request){
+    private String recoverToken(HttpServletRequest request) {
         var authHeader = request.getHeader("Authorization");
-        if(authHeader == null) return null;
+        if (authHeader == null) return null;
         return authHeader.replace("Bearer ", "");
     }
 }

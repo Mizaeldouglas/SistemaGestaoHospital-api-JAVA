@@ -1,6 +1,6 @@
 package br.com.mizaeldouglas.api.domain.patient;
 
-import br.com.mizaeldouglas.api.domain.user.User;
+import br.com.mizaeldouglas.api.domain.login.Login;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,21 +9,14 @@ import lombok.Setter;
 
 import java.util.Date;
 
-@Table(name = "patient")
+@Table(name = "TB_PATIENTS")
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Patient {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
-    private String email;
-    private String phone;
+public class Patient  extends Login {
     private String cpf;
     private String address;
     private Date birthDate;
-
 }
