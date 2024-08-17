@@ -1,6 +1,6 @@
 package br.com.mizaeldouglas.api.domain.patient;
 
-import br.com.mizaeldouglas.api.domain.login.Login;
+import br.com.mizaeldouglas.api.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Patient  extends Login {
+public class Patient  extends User {
     private String cpf;
     private String address;
     private Date birthDate;
